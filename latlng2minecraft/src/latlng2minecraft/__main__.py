@@ -40,14 +40,16 @@ def handle_var(mode: str, values: list[str]) -> dict:
             raise SystemExit("Expected 2 values: <latitude> <longitude>")
         lat, lon = float(values[0]), float(values[1])
         point: LatLngPoint = {"latitude": lat, "longitude": lon}
-        result: MinecraftPoint = latlng_to_minecraft(point, BASE_POINT_MAP)
+        # Use lat/lng base point for relative conversion
+        result: MinecraftPoint = latlng_to_minecraft(point, BASE_POINT_MAP["latlng"])
         return {"x": result["x"], "y": result["y"]}
     else:
         if len(values) != 2:
             raise SystemExit("Expected 2 values: <x> <y>")
         x, y = int(values[0]), int(values[1])
         point: MinecraftPoint = {"x": x, "y": y}
-        result: LatLngPoint = minecraft_to_latlng(point, BASE_POINT_MAP)
+        # Use lat/lng base point for relative conversion
+        result: LatLngPoint = minecraft_to_latlng(point, BASE_POINT_MAP["latlng"])
         return {"latitude": result["latitude"], "longitude": result["longitude"]}
 
 
