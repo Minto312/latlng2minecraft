@@ -40,16 +40,23 @@ def handle_var(mode: str, values: list[str]) -> dict:
             raise SystemExit("Expected 2 values: <latitude> <longitude>")
         lat, lon = float(values[0]), float(values[1])
         point: LatLngPoint = {"latitude": lat, "longitude": lon}
-        # Use lat/lng base point for relative conversion
-        result: MinecraftPoint = latlng_to_minecraft(point, BASE_POINT_MAP["latlng"])
-        return {"x": result["x"], "y": result["y"]}
+        # 1) 基準点(緯度経度)からの相対オフセット(メートル)に変換
+        rel: MinecraftPoint = latlng_to_minecraft(point, BASE_POINT_MAP["latlng"])
+        # 2) 変換後の単位(Minecraftメートル)を基準Minecraft座標に足し合わせて絶対座標に
+        abs_x = BASE_POINT_MAP["minecraft"]["x"] + rel["x"]
+        abs_y = BASE_POINT_MAP["minecraft"]["y"] + rel["y"]
+        return {"x": abs_x, "y": abs_y}
     else:
         if len(values) != 2:
             raise SystemExit("Expected 2 values: <x> <y>")
         x, y = int(values[0]), int(values[1])
-        point: MinecraftPoint = {"x": x, "y": y}
-        # Use lat/lng base point for relative conversion
-        result: LatLngPoint = minecraft_to_latlng(point, BASE_POINT_MAP["latlng"])
+        # 1) 入力Minecraft座標(絶対)から基準Minecraft座標を差し引いて相対オフセットへ
+        rel_point: MinecraftPoint = {
+            "x": x - BASE_POINT_MAP["minecraft"]["x"],
+            "y": y - BASE_POINT_MAP["minecraft"]["y"],
+        }
+        # 2) 相対オフセット(メートル)を基準緯度経度に対して緯度経度へ変換(結果は絶対緯度経度)
+        result: LatLngPoint = minecraft_to_latlng(rel_point, BASE_POINT_MAP["latlng"])
         return {"latitude": result["latitude"], "longitude": result["longitude"]}
 
 
