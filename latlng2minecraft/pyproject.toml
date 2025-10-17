@@ -29,7 +29,7 @@ packages = ["src/latlng2minecraft"]
 [tool.ruff]
 line-length = 120
 lint.select = ["ALL"]
-lint.ignore = ["D203", "D212", "COM812"]
+lint.ignore = ["D203", "D212", "COM812", "ERA001"]
 
 [tool.rye.scripts]
 format = "ruff format"
