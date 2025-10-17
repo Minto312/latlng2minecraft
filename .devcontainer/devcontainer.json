@@ -1,0 +1,27 @@
+{
+    "name": "latlng2minecraft",
+    "runArgs": ["--name=latlng2minecraft"],
+    "image": "mcr.microsoft.com/devcontainers/base:debian",
+    "shutdownAction": "stopContainer",
+    "remoteUser": "vscode",
+    "features": {
+        "ghcr.io/schlich/devcontainer-features/rye:1": {}
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+            },
+            "extensions": [
+                "mhutchie.git-graph",
+                "github.vscode-pull-request-github",
+                "streetsidesoftware.code-spell-checker",
+                "openai.chatgpt",
+
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "charliermarsh.ruff",
+                "meta.pyrefly"
+            ]
+        }
+    }
+}
