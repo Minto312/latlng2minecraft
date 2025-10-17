@@ -13,7 +13,7 @@ import sys
 from typing import Optional
 
 from latlng2minecraft.consts import BASE_POINT_MAP
-from latlng2minecraft.core import latlng_to_minecraft, minecraft_to_latlng
+from latlng2minecraft.converter import latlng_to_minecraft, minecraft_to_latlng
 from latlng2minecraft.types import LatLngPoint, MinecraftPoint
 
 
