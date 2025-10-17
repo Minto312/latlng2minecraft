@@ -11,6 +11,7 @@ import argparse
 import json
 import sys
 from typing import Optional
+import csv
 
 from latlng2minecraft.consts import BASE_POINT_MAP
 from latlng2minecraft.converter import latlng_to_minecraft, minecraft_to_latlng
@@ -26,10 +27,11 @@ def _parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
     var.add_argument("mode", choices=["lat2mc", "mc2lat"], help="Conversion direction")
     var.add_argument("values", nargs="+", help="Values: lat lon OR x y (integers)")
 
-    csvp = sub.add_parser("csv", help="CSV conversion (scaffold)")
+    csvp = sub.add_parser("csv", help="CSV conversion: append minecraft_x/minecraft_y from lat/lng")
     csvp.add_argument("input", help="Input CSV path")
     csvp.add_argument("output", help="Output CSV path")
-    csvp.add_argument("--direction", choices=["lat2mc", "mc2lat"], default="lat2mc")
+    csvp.add_argument("--lat-col", default="lat", help="Latitude column name (default: lat)")
+    csvp.add_argument("--lng-col", default="lng", help="Longitude column name (default: lng)")
 
     return parser.parse_args(argv)
 
@@ -60,9 +62,41 @@ def handle_var(mode: str, values: list[str]) -> dict:
         return {"latitude": result["latitude"], "longitude": result["longitude"]}
 
 
-def handle_csv(input_path: str, output_path: str, direction: str) -> None:
-    # Placeholder for future CSV I/O; keeps interface stable for later work.
-    raise SystemExit("CSV mode not implemented yet. This is a scaffold for future work.")
+def handle_csv(input_path: str, output_path: str, lat_col: str, lng_col: str) -> None:
+    with open(input_path, newline="", encoding="utf-8") as f_in:
+        reader = csv.DictReader(f_in)
+        fieldnames = list(reader.fieldnames or [])
+        if lat_col not in fieldnames or lng_col not in fieldnames:
+            raise SystemExit(f"Missing required columns: {lat_col}, {lng_col}")
+
+        # Prepare output columns
+        out_fieldnames = fieldnames[:]
+        if "minecraft_x" not in out_fieldnames:
+            out_fieldnames.append("minecraft_x")
+        if "minecraft_y" not in out_fieldnames:
+            out_fieldnames.append("minecraft_y")
+
+        with open(output_path, "w", newline="", encoding="utf-8") as f_out:
+            writer = csv.DictWriter(f_out, fieldnames=out_fieldnames)
+            writer.writeheader()
+
+            for row in reader:
+                try:
+                    lat = float(row[lat_col])
+                    lng = float(row[lng_col])
+                except (KeyError, ValueError):
+                    # Write row through with empty coords if invalid
+                    row["minecraft_x"] = ""
+                    row["minecraft_y"] = ""
+                    writer.writerow(row)
+                    continue
+
+                rel = latlng_to_minecraft({"latitude": lat, "longitude": lng}, BASE_POINT_MAP["latlng"])
+                abs_x = BASE_POINT_MAP["minecraft"]["x"] + rel["x"]
+                abs_y = BASE_POINT_MAP["minecraft"]["y"] + rel["y"]
+                row["minecraft_x"] = abs_x
+                row["minecraft_y"] = abs_y
+                writer.writerow(row)
 
 
 def main(argv: Optional[list[str]] = None) -> int:
@@ -72,7 +106,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         sys.stdout.write(json.dumps(out, ensure_ascii=False) + "\n")
         return 0
     if ns.command == "csv":
-        handle_csv(ns.input, ns.output, ns.direction)
+        handle_csv(ns.input, ns.output, ns.lat_col, ns.lng_col)
         return 0
     return 1
 
