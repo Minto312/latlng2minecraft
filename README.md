@@ -1,8 +1,9 @@
 # latlng2minecraft
 
-測地座標を Minecraft で扱いやすい座標に変換するためのツール群です。
+現実の測地座標を plateau2minecraft で生成された Minecraft ワールドの座標に変換するためのツールです。
 
-`latlng2minecraft` は [plateau2minecraft](https://github.com/Project-PLATEAU/plateau2minecraft) のアイデアを土台に、現実世界の緯度経度データと Minecraft Java Edition の座標を同期させ続けるために必要な変換ロジックに特化しています。小さな Python ライブラリとコマンドラインユーティリティを同梱しており、スクリプトからの利用と対話的な利用のどちらにも対応します。
+また、このリポジトリに含まれる plateau2minecraft は一部改変し、生成された建物の下（と思われる座標）に草ブロックを置くようになっています。
+必要であれば使ってください。
 
 ## 特長
 
