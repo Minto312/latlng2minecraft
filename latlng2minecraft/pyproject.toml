@@ -38,3 +38,6 @@ lint.ignore = ["D203", "D212", "COM812", "ERA001"]
 format = "ruff format"
 lint = "ruff check --fix"
 fix = ["sh", "-c", "ruff format && ruff check --fix"]
+
+[project.scripts]
+latlng2minecraft = "latlng2minecraft.__main__:main"
