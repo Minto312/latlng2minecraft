@@ -1,6 +1,5 @@
 # latlng2minecraft
 
-Python package for converting between geographic latitude/longitude pairs and Minecraft coordinates.
+緯度経度のペアと Minecraft 座標を相互に変換する Python パッケージです。
 
-The package exposes the same conversion routines used by the command line client. See the [project README](../README.md)
-for full documentation, installation instructions, and usage examples.
+コマンドラインクライアントと同じ変換ルーチンを公開しています。詳細なドキュメント、インストール手順、利用例については [プロジェクト README](../README.md) を参照してください。

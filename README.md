@@ -1,25 +1,20 @@
 # latlng2minecraft
 
-Tools for translating geodetic coordinates into Minecraft-friendly positions.
+測地座標を Minecraft で扱いやすい座標に変換するためのツール群です。
 
-`latlng2minecraft` builds upon ideas from [plateau2minecraft](https://github.com/Project-PLATEAU/plateau2minecraft)
-and focuses on the conversion logic required to keep real-world latitude/longitude data synchronized with
-Minecraft Java Edition coordinates. The project bundles a small Python library together with a command line
-utility so that you can script conversions or run them interactively.
+`latlng2minecraft` は [plateau2minecraft](https://github.com/Project-PLATEAU/plateau2minecraft) のアイデアを土台に、現実世界の緯度経度データと Minecraft Java Edition の座標を同期させ続けるために必要な変換ロジックに特化しています。小さな Python ライブラリとコマンドラインユーティリティを同梱しており、スクリプトからの利用と対話的な利用のどちらにも対応します。
 
-## Features
+## 特長
 
-- **Bidirectional conversion** – translate between WGS84 latitude/longitude and Minecraft X/Z (treated as X/Y) values.
-- **Deterministic math** – conversion relies on WGS84 ellipsoid calculations, including meridional arc length and
-  iterative latitude solving, to minimise accumulated error when mapping distances to blocks.
-- **CLI utilities** – convert single coordinate pairs (`var` subcommand) or enrich CSV files with Minecraft columns.
-- **Library-first design** – the `latlng2minecraft.converter` module can be embedded in other tooling or game
-  automation scripts.
+- **双方向変換** – WGS84 の緯度経度と Minecraft の X/Z（内部的には X/Y として扱う）座標を双方向に変換します。
+- **決定的な計算** – WGS84 楕円体に基づく子午線弧長の算出や反復法による緯度解法を用いて、ブロックへ距離をマッピングする際の累積誤差を抑えます。
+- **CLI ユーティリティ** – 単一の座標ペアを変換する `var` サブコマンドや、CSV に Minecraft の列を追加するツールを提供します。
+- **ライブラリ優先設計** – `latlng2minecraft.converter` モジュールを他のツールやゲーム自動化スクリプトに組み込めます。
 
-## Quick start
+## クイックスタート
 
-1. Ensure you have Python 3.8 or newer available.
-2. Clone the repository and install dependencies:
+1. Python 3.8 以降が利用可能であることを確認します。
+2. リポジトリをクローンし、依存関係をインストールします。
 
    ```bash
    git clone https://github.com/<your-org>/latlng2minecraft.git
@@ -29,32 +24,29 @@ utility so that you can script conversions or run them interactively.
    pip install -e .
    ```
 
-   The project is also compatible with [Rye](https://rye-up.com/) – `rye sync` installs both runtime and development
-   dependencies declared in `pyproject.toml`.
+   [Rye](https://rye-up.com/) にも対応しており、`rye sync` を実行すると `pyproject.toml` に記載された実行時・開発時の依存関係がまとめてインストールされます。
 
-3. Verify the command line interface:
+3. コマンドラインインターフェースを確認します。
 
    ```bash
    latlng2minecraft var lat2mc 36.1389 139.3891
    ```
 
-   The CLI prints a JSON object containing the converted Minecraft coordinates.
+   変換された Minecraft 座標を含む JSON オブジェクトが表示されます。
 
-### CSV conversion example
+### CSV 変換例
 
-Use the `csv` subcommand to enrich a CSV file that contains latitude/longitude columns. The tool appends
-`minecraft_x` and `minecraft_y` columns using the same base point that the rest of the project employs.
+緯度経度の列を含む CSV ファイルを `csv` サブコマンドで拡張できます。同じ基準点を使って `minecraft_x` と `minecraft_y` 列が追記されます。
 
 ```bash
 latlng2minecraft csv input.csv output.csv --lat-col latitude --lng-col longitude
 ```
 
-Rows with missing or invalid numeric values are copied with empty Minecraft coordinate columns so that downstream
-systems can detect and handle the gaps.
+数値が欠けている、または不正な行は Minecraft 座標列が空のままコピーされるため、後段のシステムで欠損を検出しやすくなります。
 
-### Library usage
+### ライブラリとしての利用
 
-You can access the conversion routines programmatically:
+変換ルーチンはコードから直接呼び出せます。
 
 ```python
 from latlng2minecraft.consts import BASE_POINT_MAP
@@ -71,30 +63,26 @@ absolute = {
 print(absolute)
 ```
 
-The `BASE_POINT_MAP` constant defines the relationship between a real-world origin and a Minecraft reference
-point. You can supply your own base point if your world uses a different anchor.
+`BASE_POINT_MAP` 定数は、現実世界の原点と Minecraft の参照点との対応関係を定義します。ワールドで異なるアンカーを用いる場合は、独自の基準点を指定してください。
 
-## Development workflow
+## 開発フロー
 
-This repository uses [Ruff](https://docs.astral.sh/ruff/) for formatting (`ruff format`) and linting
-(`ruff check --fix`). The recommended workflow is:
+このリポジトリでは [Ruff](https://docs.astral.sh/ruff/) をフォーマッタ（`ruff format`）兼リンタ（`ruff check --fix`）として利用します。推奨されるワークフローは次のとおりです。
 
 ```bash
-# Install development dependencies
-rye sync  # or `pip install -e .[dev]` once equivalent extras are defined
+# 開発用依存関係のインストール
+rye sync  # 同等の extras を用意した場合は `pip install -e .[dev]` でも可
 
-# Format & lint
+# フォーマットと lint
 rye run format
 rye run lint
 
-# Run tests
+# テスト実行
 rye run pytest
 ```
 
-Running `pytest` without Rye works as well. Continuous integration expects that the formatter and lint checks pass
-before changes are committed.
+Rye を使わずに `pytest` を直接実行しても構いません。コミット前にフォーマッタと lint のチェックが通ることを継続的インテグレーションでも期待しています。
 
-## License
+## ライセンス
 
-This project is distributed under the terms of the [MIT License](LICENSE). Portions of the source originate from
-[plateau2minecraft](https://github.com/Project-PLATEAU/plateau2minecraft) and retain their original licensing terms.
+本プロジェクトは [MIT License](LICENSE) の下で配布されています。一部のソースコードは [plateau2minecraft](https://github.com/Project-PLATEAU/plateau2minecraft) から継承しており、元のライセンス条項に従います。
