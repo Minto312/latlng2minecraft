@@ -1,3 +1,5 @@
 # latlng2minecraft
 
-Describe your project here.
+緯度経度のペアと Minecraft 座標を相互に変換する Python パッケージです。
+
+コマンドラインクライアントと同じ変換ルーチンを公開しています。詳細なドキュメント、インストール手順、利用例については [プロジェクト README](../README.md) を参照してください。
