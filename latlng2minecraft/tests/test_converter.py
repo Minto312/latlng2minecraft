@@ -28,7 +28,7 @@ class TestLatLngToMinecraft(unittest.TestCase):
         result: MinecraftPoint = latlng_to_minecraft(base_point, base_point)
 
         assert result["x"] == 0
-        assert result["y"] == 0
+        assert result["z"] == 0
 
     def test_north_movement(self) -> None:
         """Test conversion for north movement."""
@@ -39,7 +39,7 @@ class TestLatLngToMinecraft(unittest.TestCase):
 
         # 約1000m北に移動(緯度1度≈111km)
         assert result["x"] == 0  # 経度方向の変化なし
-        assert abs(result["y"] - 1000) < TOL_NORTH_METERS  # 1000m付近(誤差50m以内)
+        assert abs(result["z"] - 1000) < TOL_NORTH_METERS  # 1000m付近(誤差50m以内)
 
     def test_east_movement(self) -> None:
         """Test conversion for east movement."""
@@ -50,7 +50,7 @@ class TestLatLngToMinecraft(unittest.TestCase):
 
         # 約1000m東に移動(緯度36度付近での経度1度≈90km)
         assert abs(result["x"] - 1000) < TOL_EAST_METERS  # 1000m付近(誤差200m以内)
-        assert result["y"] == 0  # 緯度方向の変化なし
+        assert result["z"] == 0  # 緯度方向の変化なし
 
 
 class TestMinecraftToLatLng(unittest.TestCase):
@@ -59,7 +59,7 @@ class TestMinecraftToLatLng(unittest.TestCase):
     def test_origin_conversion(self) -> None:
         """Test conversion of origin returns base point."""
         base_point: LatLngPoint = {"latitude": 36.138755, "longitude": 139.388908}
-        minecraft: MinecraftPoint = {"x": 0, "y": 0}
+        minecraft: MinecraftPoint = {"x": 0, "z": 0}
 
         result: LatLngPoint = minecraft_to_latlng(minecraft, base_point)
 
@@ -69,14 +69,14 @@ class TestMinecraftToLatLng(unittest.TestCase):
     def test_round_trip_conversion(self) -> None:
         """Test round-trip conversion maintains precision."""
         base_point: LatLngPoint = {"latitude": 36.138755, "longitude": 139.388908}
-        original_minecraft: MinecraftPoint = {"x": 500, "y": -300}
+        original_minecraft: MinecraftPoint = {"x": 500, "z": -300}
 
         # Minecraft -> LatLng -> Minecraft
         latlng: LatLngPoint = minecraft_to_latlng(original_minecraft, base_point)
         converted_minecraft: MinecraftPoint = latlng_to_minecraft(latlng, base_point)
 
         assert abs(converted_minecraft["x"] - original_minecraft["x"]) < 1
-        assert abs(converted_minecraft["y"] - original_minecraft["y"]) < 1
+        assert abs(converted_minecraft["z"] - original_minecraft["z"]) < 1
 
 
 class TestConversionAccuracy(unittest.TestCase):
@@ -85,7 +85,7 @@ class TestConversionAccuracy(unittest.TestCase):
     def test_1000m_north_accuracy(self) -> None:
         """Test accuracy for 1000m north movement."""
         base_point: LatLngPoint = {"latitude": 36.138755, "longitude": 139.388908}
-        minecraft: MinecraftPoint = {"x": 0, "y": 1000}
+        minecraft: MinecraftPoint = {"x": 0, "z": 1000}
 
         result: LatLngPoint = minecraft_to_latlng(minecraft, base_point)
 
@@ -100,7 +100,7 @@ class TestConversionAccuracy(unittest.TestCase):
     def test_1000m_east_accuracy(self) -> None:
         """Test accuracy for 1000m east movement."""
         base_point: LatLngPoint = {"latitude": 36.138755, "longitude": 139.388908}
-        minecraft: MinecraftPoint = {"x": 1000, "y": 0}
+        minecraft: MinecraftPoint = {"x": 1000, "z": 0}
 
         result: LatLngPoint = minecraft_to_latlng(minecraft, base_point)
 
@@ -123,7 +123,7 @@ class TestEdgeCases(unittest.TestCase):
     def test_negative_coordinates(self) -> None:
         """Test conversion with negative Minecraft coordinates."""
         base_point: LatLngPoint = {"latitude": 36.138755, "longitude": 139.388908}
-        minecraft: MinecraftPoint = {"x": -500, "y": -300}
+        minecraft: MinecraftPoint = {"x": -500, "z": -300}
 
         result: LatLngPoint = minecraft_to_latlng(minecraft, base_point)
 
@@ -134,7 +134,7 @@ class TestEdgeCases(unittest.TestCase):
     def test_large_coordinates(self) -> None:
         """Test conversion with large Minecraft coordinates."""
         base_point: LatLngPoint = {"latitude": 36.138755, "longitude": 139.388908}
-        minecraft: MinecraftPoint = {"x": 10000, "y": 10000}
+        minecraft: MinecraftPoint = {"x": 10000, "z": 10000}
 
         result: LatLngPoint = minecraft_to_latlng(minecraft, base_point)
 

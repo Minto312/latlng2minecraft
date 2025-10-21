@@ -7,7 +7,7 @@
 
 ## 特長
 
-- **双方向変換** – WGS84 の緯度経度と Minecraft の X/Z（内部的には X/Y として扱う）座標を双方向に変換します。
+- **双方向変換** – WGS84 の緯度経度と Minecraft の X/Z 座標を双方向に変換します。
 - **決定的な計算** – WGS84 楕円体に基づく子午線弧長の算出や反復法による緯度解法を用いて、ブロックへ距離をマッピングする際の累積誤差を抑えます。
 - **CLI ユーティリティ** – 単一の座標ペアを変換する `var` サブコマンドや、CSV に Minecraft の列を追加するツールを提供します。
 - **ライブラリ優先設計** – `latlng2minecraft.converter` モジュールを他のツールやゲーム自動化スクリプトに組み込めます。
@@ -37,7 +37,7 @@
 
 ### CSV 変換例
 
-緯度経度の列を含む CSV ファイルを `csv` サブコマンドで拡張できます。同じ基準点を使って `minecraft_x` と `minecraft_y` 列が追記されます。
+緯度経度の列を含む CSV ファイルを `csv` サブコマンドで拡張できます。同じ基準点を使って `minecraft_x` と `minecraft_z` 列が追記されます。
 
 ```bash
 latlng2minecraft csv input.csv output.csv --lat-col latitude --lng-col longitude
@@ -59,7 +59,7 @@ relative = latlng_to_minecraft(
 )
 absolute = {
     "x": BASE_POINT_MAP["minecraft"]["x"] + relative["x"],
-    "y": BASE_POINT_MAP["minecraft"]["y"] + relative["y"],
+    "z": BASE_POINT_MAP["minecraft"]["z"] + relative["z"],
 }
 print(absolute)
 ```

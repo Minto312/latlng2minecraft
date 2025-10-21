@@ -42,7 +42,7 @@ def latlng_to_minecraft(latlng: LatLngPoint, base_point: LatLngPoint) -> Minecra
 
     return {
         "x": round(lon_distance),  # 経度方向をx軸とする
-        "y": round(lat_distance),  # 緯度方向をy軸とする
+        "z": round(lat_distance),  # 緯度方向をz軸とする
     }
 
 
@@ -60,7 +60,7 @@ def minecraft_to_latlng(minecraft: MinecraftPoint, base_point: LatLngPoint) -> L
     """
     # 緯度の逆変換
     # メートルから緯度への変換(反復計算を使用)
-    lat_distance: int = minecraft["y"]
+    lat_distance: int = minecraft["z"]
     new_lat: float = _meters_to_latitude(lat_distance, base_point["latitude"])
 
     # 経度の変換
