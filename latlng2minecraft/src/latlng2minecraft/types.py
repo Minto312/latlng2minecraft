@@ -9,7 +9,7 @@ class MinecraftPoint(TypedDict):
     """Minecraft point."""
 
     x: int
-    y: int
+    z: int
 
 
 class LatLngPoint(TypedDict):
