@@ -1,4 +1,4 @@
-"""latlng2minecraft types."""
+"""kakiko2minecraft types."""
 
 from __future__ import annotations
 

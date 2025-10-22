@@ -1,6 +1,6 @@
-"""latlng2minecraft consts."""
+"""kakiko2minecraft consts."""
 
-from latlng2minecraft.types import PointMap
+from kakiko2minecraft.types import PointMap
 
 BASE_POINT_MAP: PointMap = {
     "minecraft": {"x": -559, "z": -395},

@@ -6,7 +6,7 @@ import math
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from latlng2minecraft.types import LatLngPoint, MinecraftPoint
+    from kakiko2minecraft.types import LatLngPoint, MinecraftPoint
 
 # 地球の楕円体パラメータ(WGS84)
 EARTH_EQUATORIAL_RADIUS = 6378137.0  # 赤道半径(メートル)

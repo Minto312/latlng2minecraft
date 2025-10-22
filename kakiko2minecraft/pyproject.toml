@@ -1,13 +1,15 @@
 [project]
-name = "latlng2minecraft"
+name = "kakiko2minecraft"
 version = "0.1.0"
-description = "Add your description here"
+description = "Convert WGS84 latitude/longitude coordinates to Minecraft block positions."
 authors = [
     { name = "Minto312", email = "karinto3219@gmail.com" }
 ]
 dependencies = []
 readme = "README.md"
 requires-python = ">= 3.8"
+license = { file = "../LICENSE" }
+keywords = ["minecraft", "gis", "plateau", "coordinates"]
 
 [build-system]
 requires = ["hatchling"]
@@ -24,7 +26,7 @@ dev-dependencies = [
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/latlng2minecraft"]
+packages = ["src/kakiko2minecraft"]
 
 [tool.ruff]
 line-length = 120
@@ -39,5 +41,8 @@ format = "ruff format"
 lint = "ruff check --fix"
 fix = ["sh", "-c", "ruff format && ruff check --fix"]
 
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+
 [project.scripts]
-latlng2minecraft = "latlng2minecraft.__main__:main"
+kakiko2minecraft = "kakiko2minecraft.__main__:main"

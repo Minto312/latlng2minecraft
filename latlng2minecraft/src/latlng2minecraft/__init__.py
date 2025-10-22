@@ -1,1 +1,0 @@
-"""latlng2minecraft package."""
