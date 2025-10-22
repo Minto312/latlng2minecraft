@@ -1,4 +1,4 @@
-# latlng2minecraft
+# kakiko2minecraft
 
 緯度経度のペアと Minecraft 座標を相互に変換する Python パッケージです。
 

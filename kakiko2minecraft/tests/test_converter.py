@@ -4,13 +4,13 @@ import math
 import unittest
 from typing import TYPE_CHECKING
 
-from latlng2minecraft.converter import (
+from kakiko2minecraft.converter import (
     latlng_to_minecraft,
     minecraft_to_latlng,
 )
 
 if TYPE_CHECKING:
-    from latlng2minecraft.types import LatLngPoint, MinecraftPoint
+    from kakiko2minecraft.types import LatLngPoint, MinecraftPoint
 
 
 TOL_NORTH_METERS = 50

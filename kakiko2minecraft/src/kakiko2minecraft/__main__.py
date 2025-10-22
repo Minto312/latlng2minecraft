@@ -1,5 +1,5 @@
 """
-Command-line interface for latlng2minecraft.
+Command-line interface for kakiko2minecraft.
 
 Supports two modes initially:
 - variable mode: compute using inline values (no I/O)
@@ -15,18 +15,18 @@ import sys
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from latlng2minecraft.consts import BASE_POINT_MAP
-from latlng2minecraft.converter import latlng_to_minecraft, minecraft_to_latlng
+from kakiko2minecraft.consts import BASE_POINT_MAP
+from kakiko2minecraft.converter import latlng_to_minecraft, minecraft_to_latlng
 
 PAIR_VALUE_COUNT = 2
 
 if TYPE_CHECKING:
-    from latlng2minecraft.types import LatLngPoint, MinecraftPoint
+    from kakiko2minecraft.types import LatLngPoint, MinecraftPoint
 
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        prog="latlng2minecraft", description="Convert between lat/lng and Minecraft coords"
+        prog="kakiko2minecraft", description="Convert between lat/lng and Minecraft coords"
     )
 
     sub = parser.add_subparsers(dest="command", required=True)

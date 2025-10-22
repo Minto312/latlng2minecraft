@@ -1,4 +1,4 @@
-# latlng2minecraft
+# kakiko2minecraft
 
 現実の測地座標を plateau2minecraft で生成された Minecraft ワールドの座標に変換するためのツールです。
 
@@ -10,7 +10,11 @@
 - **双方向変換** – WGS84 の緯度経度と Minecraft の X/Z 座標を双方向に変換します。
 - **決定的な計算** – WGS84 楕円体に基づく子午線弧長の算出や反復法による緯度解法を用いて、ブロックへ距離をマッピングする際の累積誤差を抑えます。
 - **CLI ユーティリティ** – 単一の座標ペアを変換する `var` サブコマンドや、CSV に Minecraft の列を追加するツールを提供します。
-- **ライブラリ優先設計** – `latlng2minecraft.converter` モジュールを他のツールやゲーム自動化スクリプトに組み込めます。
+- **ライブラリ優先設計** – `kakiko2minecraft.converter` モジュールを他のツールやゲーム自動化スクリプトに組み込めます。
+
+## データソースについて
+
+同梱されているサンプルの元となる CSV データは、WebGIS ツール「カキコまっぷ」からエクスポートしたものです。教材サイト「電子地図で考え分析しよう」（学習情報研究センター）の [高校版カキコまっぷ](https://www.gakujoken.or.jp/R5gis.minnanomap/contents/i_kakikomap.html) ページで公開されているツールを利用しています。詳しくは教材サイトのトップページをご確認ください: <https://www.gakujoken.or.jp/R5gis.minnanomap/>。
 
 ## クイックスタート
 
@@ -18,8 +22,8 @@
 2. リポジトリをクローンし、依存関係をインストールします。
 
    ```bash
-   git clone https://github.com/<your-org>/latlng2minecraft.git
-   cd latlng2minecraft/latlng2minecraft
+   git clone https://github.com/<your-org>/kakiko2minecraft.git
+   cd kakiko2minecraft/kakiko2minecraft
    python -m venv .venv
    source .venv/bin/activate
    pip install -e .
@@ -30,7 +34,7 @@
 3. コマンドラインインターフェースを確認します。
 
    ```bash
-   latlng2minecraft var lat2mc 36.1389 139.3891
+   kakiko2minecraft var lat2mc 36.1389 139.3891
    ```
 
    変換された Minecraft 座標を含む JSON オブジェクトが表示されます。
@@ -40,7 +44,7 @@
 緯度経度の列を含む CSV ファイルを `csv` サブコマンドで拡張できます。同じ基準点を使って `minecraft_x` と `minecraft_z` 列が追記されます。
 
 ```bash
-latlng2minecraft csv input.csv output.csv --lat-col latitude --lng-col longitude
+kakiko2minecraft csv input.csv output.csv --lat-col latitude --lng-col longitude
 ```
 
 数値が欠けている、または不正な行は Minecraft 座標列が空のままコピーされるため、後段のシステムで欠損を検出しやすくなります。
@@ -50,8 +54,8 @@ latlng2minecraft csv input.csv output.csv --lat-col latitude --lng-col longitude
 変換ルーチンはコードから直接呼び出せます。
 
 ```python
-from latlng2minecraft.consts import BASE_POINT_MAP
-from latlng2minecraft.converter import latlng_to_minecraft
+from kakiko2minecraft.consts import BASE_POINT_MAP
+from kakiko2minecraft.converter import latlng_to_minecraft
 
 relative = latlng_to_minecraft(
     {"latitude": 36.138755, "longitude": 139.388908},
